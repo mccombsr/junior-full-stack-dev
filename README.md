@@ -1,34 +1,68 @@
-# Junior Full Stack Developer
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-At Openforce we work in terms of user stories with varying degrees of requirements along with lots of feedback cycles.  We feel the best way to measure how someone would work with our team is to simulate self-organized work.  The following steps make up the technical interview.  Any language/framework for submissions is acceptable.  React (front end) and Elixir (back end) preferred.
+## Available Scripts
 
-1. Create a GitHub repository for this project.  
-2. Complete the stories below.
-3. Email development@oforce.com a link to your application AND GitHub repository with subject “**Junior Full Stack Developer Candidate - Your Name**"
+In the project directory, you can run:
 
-Using the “Ron Swanson Quotes API” - https://github.com/jamesseanwright/ron-swanson-quotes#ron-swanson-quotes-api
+### `npm start`
 
-## Front End Stories
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### Show Me Swanson Swag
-As an internet user I should be able to get Ron Swanson quotes on demand.
-* It should allow me to click a button/image to get a Swanson word of wisdom
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
 
-### Right Size Swanson
-As an internet user I should be able get quotes that are a size that I requested.
-* It should allow me to determine if I want a small, medium or large quote
-* It should show me a quote that are 4 words or less if I choose small
-* It should show me a quote that is 5 words to 12 words if I choose medium
-* It should show me a quote that is 13 words or larger if I choose large
+### `npm test`
 
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Back End Stories
+### `npm run build`
 
-### Vote for Awesomeness
-As an internet user I should be able to rate a Ron Swanson Quote.
-* It should let me give it rating of 1 to 5 on a quote
-* It should not let the same IP address / session rate more than 1 time
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### Average Quote Rating
-As an internet user I should be able to see the average rating for a Ron Swanson Quote.
-* It should show me the average rating for a quote when displaying the quote
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+
+### Analyzing the Bundle Size
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+
+### Making a Progressive Web App
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+
+### Advanced Configuration
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+
+### Deployment
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+
+### `npm run build` fails to minify
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
