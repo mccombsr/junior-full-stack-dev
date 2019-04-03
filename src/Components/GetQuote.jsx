@@ -6,32 +6,43 @@ export default class GetQuote extends Component {
     super(props);
     this.state = {
       wisdom: "Test wisdom",
-      size: ''
+      size: ""
     };
   }
 
   handleGetWisdom = async () => {
-    if(this.state.size.length > 0){
+    if (this.state.size.length > 0) {
       console.log("Getting wisdom...");
       // hit API and set quote on this.state.wisdom
       axios
         .get(`https://ron-swanson-quotes.herokuapp.com/v2/quotes`)
         .then(response => {
-          console.log(response.data)
-          let numWords = response.data[0].split(' ');
+          console.log(response.data[0]);
+          console.log(this.state.wisdom)
+          let numWords = response.data[0].split(" ");
           console.log(numWords);
-          if(this.state.size === 'small'){
-            if(numWords.length <= 3){
-              this.setState({wisdom: response.data})
-            } else {this.handleGetWisdom()}
-          } else if (this.state.size === 'medium'){
-            if(numWords.length > 3 && numWords.length < 13){
-              this.setState({wisdom: response.data})
-            } else {this.handleGetWisdom()}
-          } else if (this.state.size === 'large') {
-            if(numWords.length > 12){
-              this.setState({wisdom: response.data})
-            } else {this.handleGetWisdom()}
+          if (this.state.size === "small") {
+            if (numWords.length <= 3 && response.data[0] !== this.state.wisdom) {
+              this.setState({ wisdom: response.data[0] });
+            } else {
+              this.handleGetWisdom();
+            }
+          } else if (this.state.size === "medium") {
+            if (
+              numWords.length > 3 &&
+              numWords.length < 13 &&
+              response.data[0] !== this.state.wisdom
+            ) {
+              this.setState({ wisdom: response.data[0] });
+            } else {
+              this.handleGetWisdom();
+            }
+          } else if (this.state.size === "large") {
+            if (numWords.length > 12 && response.data[0] !== this.state.wisdom) {
+              this.setState({ wisdom: response.data[0] });
+            } else {
+              this.handleGetWisdom();
+            }
           }
 
           // this.setState({ wisdom: response.data });
@@ -39,10 +50,10 @@ export default class GetQuote extends Component {
     }
   };
 
-  handleSize = async (e) => {
-    await this.setState({size: e.target.value})
-    console.log("Wisdom size: ", this.state.size)
-  }
+  handleSize = async e => {
+    await this.setState({ size: e.target.value });
+    console.log("Wisdom size: ", this.state.size);
+  };
 
   render() {
     let wisdom;
@@ -51,7 +62,12 @@ export default class GetQuote extends Component {
     }
     return (
       <div>
-        <select name="" onChange={e => {this.handleSize(e)}}>
+        <select
+          name=""
+          onChange={e => {
+            this.handleSize(e);
+          }}
+        >
           <option value="">
             Select the amount of Wisdom you would like...
           </option>
