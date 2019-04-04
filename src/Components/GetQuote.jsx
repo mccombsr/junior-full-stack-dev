@@ -5,7 +5,7 @@ export default class GetQuote extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wisdom: "Test wisdom",
+      wisdom: "",
       size: ""
     };
   }
@@ -18,15 +18,21 @@ export default class GetQuote extends Component {
         .get(`https://ron-swanson-quotes.herokuapp.com/v2/quotes`)
         .then(response => {
           console.log(response.data[0]);
-          console.log(this.state.wisdom)
+          console.log(this.state.wisdom);
           let numWords = response.data[0].split(" ");
           console.log(numWords);
+          
+          //If small
           if (this.state.size === "small") {
-            if (numWords.length <= 3 && response.data[0] !== this.state.wisdom) {
+            if (
+              numWords.length <= 3 &&
+              response.data[0] !== this.state.wisdom
+            ) {
               this.setState({ wisdom: response.data[0] });
             } else {
               this.handleGetWisdom();
             }
+            //If medium
           } else if (this.state.size === "medium") {
             if (
               numWords.length > 3 &&
@@ -37,15 +43,17 @@ export default class GetQuote extends Component {
             } else {
               this.handleGetWisdom();
             }
+            //If large
           } else if (this.state.size === "large") {
-            if (numWords.length > 12 && response.data[0] !== this.state.wisdom) {
+            if (
+              numWords.length > 12 &&
+              response.data[0] !== this.state.wisdom
+            ) {
               this.setState({ wisdom: response.data[0] });
             } else {
               this.handleGetWisdom();
             }
           }
-
-          // this.setState({ wisdom: response.data });
         });
     }
   };
