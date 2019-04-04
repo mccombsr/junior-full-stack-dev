@@ -21,7 +21,7 @@ export default class GetQuote extends Component {
           console.log(this.state.wisdom);
           let numWords = response.data[0].split(" ");
           console.log(numWords);
-          
+
           //If small
           if (this.state.size === "small") {
             if (
@@ -69,28 +69,30 @@ export default class GetQuote extends Component {
       wisdom = <p>"{this.state.wisdom}"</p>;
     }
     return (
-      <div>
-        <select
-          name=""
-          onChange={e => {
-            this.handleSize(e);
-          }}
-        >
-          <option value="">
-            Select the amount of Wisdom you would like...
-          </option>
-          <option value="small">Small</option>
-          <option value="medium">Medium</option>
-          <option value="large">Large</option>
-        </select>
+      <div className="get-quote-container">
         <img
           src="https://pbs.twimg.com/profile_images/3280677683/0ca071f08032e65c1b268b1cf56466ef_400x400.jpeg"
           alt=""
         />
-        <button onClick={this.handleGetWisdom}>
-          Today's your lucky day, as I am now going to share with you my wisdom.
-        </button>
-        {wisdom}
+        <div className="get-quote-sub-container">
+          <h4>Select the size of wisdom you seek</h4>
+          <select
+            name=""
+            onChange={e => {
+              this.handleSize(e);
+            }}
+          >
+            <option value="">Choose Here</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
+          <button onClick={this.handleGetWisdom}>
+            Today's your lucky day, as I am now going to share with you my
+            wisdom.
+          </button>
+          <div className="wisdom-container">{wisdom}</div>
+        </div>
       </div>
     );
   }

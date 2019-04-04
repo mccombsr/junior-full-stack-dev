@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './Styling/App.scss';
 import GetQuote from './Components/GetQuote';
 
 class App extends Component {

@@ -1,0 +1,49 @@
+@import "./reset";
+@import "./config";
+
+.App {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./Assets/charles-mulligans-steak-house_art1.jpg");
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .get-quote-container {
+    width: 90%;
+    height: 90%;
+    background: coral;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around; //This doesn't seem to be doing anything.
+
+    img {
+      width: 30%;
+      box-shadow: (5px, 5px, 5px, 5px rgb(39, 39, 39));
+    }
+
+    .get-quote-sub-container {
+      background: pink;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      width: 50%;
+      height: 55%;
+
+      h4 {
+        background: #333;
+        text-align: center;
+      }
+
+      .wisdom-container {
+        background: #333;
+        width: 90%;
+        height: 10%;
+        text-align: center;
+      }
+    }
+  }
+}
