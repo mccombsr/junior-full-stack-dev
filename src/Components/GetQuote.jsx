@@ -41,9 +41,12 @@ export default class GetQuote extends Component {
                 .get(`/api/get-users-rating/${response.data[0]}`)
                 .then(res => {
                   console.log("res.data: ", res.data);
+                  console.log("UsersRating before: ", this.state.usersRating)
                   if (res.data.length > 0) {
+                    console.log("usersRating", res.data[0].rating)
                     this.setState({ usersRating: res.data[0].rating });
                   }
+                  console.log("UsersRating after: ", this.state.usersRating)
                 })
                 .then(
                   //GET rating average
