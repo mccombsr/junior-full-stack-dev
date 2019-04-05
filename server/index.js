@@ -26,17 +26,14 @@ massive(CONNECTION_STRING)
 app.get(`/api/get-users-rating/:quote`, async (req, res) => {
   let { quote } = req.params;
   let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-  console.log("Old IP: ", req.ip, "quote: ", quote, "New IP: ", ip);
   const db = req.app.get("db");
   let usersRating = await db.get_users_rating([quote, ip]);
-  console.log("usersRating", usersRating);
   res.send(usersRating);
 });
 
 // GET rating average
 app.get(`/api/get-rating-avg/:quote`, async (req, res) => {
   let { quote } = req.params;
-  // console.log(quote);
 
   const db = req.app.get("db");
   let avgRating = await db.get_rating_avg([quote]);
@@ -46,9 +43,7 @@ app.get(`/api/get-rating-avg/:quote`, async (req, res) => {
 
 //POST new rating
 app.post(`/api/new-rating/:rating/:quote`, async (req, res) => {
-  // console.log('New rating posted!!!')
   let { rating, quote } = req.params;
-  // console.log(quote, req.ip, rating);
   const db = req.app.get("db");
   let newRating = await db.post_rating([quote, req.ip, rating]);
   res.sendStatus(200);
