@@ -18,7 +18,7 @@ export default class GetQuote extends Component {
   handleGetWisdom = async () => {
     if (this.state.size.length > 0) {
       console.log("Getting wisdom...");
-      this.setState({ isLoading: true, usersRating: 0, newRating: 0 });
+      await this.setState({ isLoading: true, usersRating: 0, newRating: 0 });
 
       // hit API and set quote on this.state.wisdom
       await axios
