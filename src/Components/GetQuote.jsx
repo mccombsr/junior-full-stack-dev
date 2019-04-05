@@ -14,6 +14,7 @@ export default class GetQuote extends Component {
     };
   }
 
+  // Get correct size quote and rating info
   handleGetWisdom = async () => {
     if (this.state.size.length > 0) {
       console.log("Getting wisdom...");
@@ -31,7 +32,10 @@ export default class GetQuote extends Component {
               numWords.length <= 3 &&
               response.data[0] !== this.state.wisdom
             ) {
-              this.setState({ wisdom: response.data[0], isLoading: false });
+              this.setState({
+                wisdom: `"${response.data[0]}"`,
+                isLoading: false
+              });
               //GET user's rating
               axios
                 .get(`/api/get-users-rating/${response.data[0]}`)
@@ -50,8 +54,6 @@ export default class GetQuote extends Component {
                       this.setState({ ratingAvg: res.data[0].round });
                     })
                 );
-
-              // this.setState({ isLoading: false });
             } else {
               this.handleGetWisdom();
             }
@@ -62,8 +64,10 @@ export default class GetQuote extends Component {
               numWords.length < 13 &&
               response.data[0] !== this.state.wisdom
             ) {
-              this.setState({ wisdom: response.data[0], isLoading: false });
-              // this.setState({ isLoading: false });
+              this.setState({
+                wisdom: `"${response.data[0]}"`,
+                isLoading: false
+              });
               //GET user's rating
               axios
                 .get(`/api/get-users-rating/${response.data[0]}`)
@@ -91,8 +95,10 @@ export default class GetQuote extends Component {
               numWords.length > 12 &&
               response.data[0] !== this.state.wisdom
             ) {
-              this.setState({ wisdom: response.data[0], isLoading: false });
-              // this.setState({ isLoading: false });
+              this.setState({
+                wisdom: `"${response.data[0]}"`,
+                isLoading: false
+              });
               //GET user's rating
               axios
                 .get(`/api/get-users-rating/${response.data[0]}`)
@@ -116,6 +122,7 @@ export default class GetQuote extends Component {
             }
           }
         });
+      // Notify user why quote wasn't generated
     } else {
       window.alert(
         "Follow the instructions I gave you and select a size first."
@@ -123,34 +130,38 @@ export default class GetQuote extends Component {
     }
   };
 
+  // Set Size selection to state
   handleSize = async e => {
     await this.setState({ size: e.target.value });
-    // console.log("Wisdom size: ", this.state.size);
   };
 
+  // Set users new rating to state
   handleRating = async e => {
     await this.setState({ newRating: e.target.value });
-    console.log(this.state.newRating);
   };
 
+  // Submit users new rating to DB
   handleSubmitRating = async () => {
+    // Determine user has selected a valid rating
     if (this.state.newRating > 0) {
+      // Send rating to backend
       await axios.post(
         `/api/new-rating/${this.state.newRating}/${this.state.wisdom}`
       );
-      console.log(
-        `${this.state.newRating} was submitted as your rating for this quote.`
-      );
+      // update State with new rating to get rid of submit button
       this.setState({ usersRating: this.state.newRating });
+      //  GET the new average rating for the quote
       axios.get(`/api/get-rating-avg/${this.state.wisdom}`).then(res => {
         this.setState({ ratingAvg: res.data[0].round });
       });
+      // Notify user why rating wasn't submitted
     } else window.alert("Your rating can not be nothing.");
   };
 
   render() {
-    console.log(this.state);
+    // wisdom-container should be empty by default
     let wisdom = <div className="wisdom-container" />;
+    // rating default
     let rating = (
       <div className="ratings">
         <h5 className="rating-avg">
@@ -174,7 +185,7 @@ export default class GetQuote extends Component {
       </div>
     );
 
-    //Conditional user's rating render
+    //Conditional rating render when quote already rated by user
     if (this.state.usersRating > 0) {
       rating = (
         <div className="ratings">
@@ -196,11 +207,13 @@ export default class GetQuote extends Component {
     if (this.state.wisdom.length > 0) {
       wisdom = (
         <div className="wisdom-container">
-          <p>"{this.state.wisdom}"</p>
+          <p>{this.state.wisdom}</p>
           {rating}
         </div>
       );
     }
+
+    //Render loading que while fetching quote
     if (this.state.isLoading === true) {
       wisdom = (
         <div className="wisdom-container">

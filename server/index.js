@@ -1,7 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
-const axios = require('axios');
 const bodyParser = require('body-parser');
 const massive = require('massive');
 
@@ -17,9 +15,10 @@ app.use( express.static( `${__dirname}/../build` ) );
 const {
     SERVER_PORT,
     CONNECTION_STRING,
-    SECRET,
 } = process.env;
 
+
+// Connect to DB
 massive(CONNECTION_STRING)
     .then((dbInstance) => {
         app.set('db', dbInstance);
@@ -29,12 +28,6 @@ massive(CONNECTION_STRING)
         console.log(err);
     })
 
-//middleware
-// app.use(session({
-//     secret: SECRET,
-//     resave: false,
-//     saveUninitialized: false
-// }))
 
 //ENDPOINTS
 //Check if ip has already rated this quote
