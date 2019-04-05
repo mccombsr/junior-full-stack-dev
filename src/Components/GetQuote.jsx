@@ -33,7 +33,7 @@ export default class GetQuote extends Component {
               response.data[0] !== this.state.wisdom
             ) {
               this.setState({
-                wisdom: `"${response.data[0]}"`,
+                wisdom: response.data[0],
                 isLoading: false
               });
               //GET user's rating
@@ -41,12 +41,12 @@ export default class GetQuote extends Component {
                 .get(`/api/get-users-rating/${response.data[0]}`)
                 .then(res => {
                   console.log("res.data: ", res.data);
-                  console.log("UsersRating before: ", this.state.usersRating)
+                  console.log("UsersRating before: ", this.state.usersRating);
                   if (res.data.length > 0) {
-                    console.log("usersRating", res.data[0].rating)
+                    console.log("usersRating", res.data[0].rating);
                     this.setState({ usersRating: res.data[0].rating });
                   }
-                  console.log("UsersRating after: ", this.state.usersRating)
+                  console.log("UsersRating after: ", this.state.usersRating);
                 })
                 .then(
                   //GET rating average
@@ -68,7 +68,7 @@ export default class GetQuote extends Component {
               response.data[0] !== this.state.wisdom
             ) {
               this.setState({
-                wisdom: `"${response.data[0]}"`,
+                wisdom: response.data[0],
                 isLoading: false
               });
               //GET user's rating
@@ -99,7 +99,7 @@ export default class GetQuote extends Component {
               response.data[0] !== this.state.wisdom
             ) {
               this.setState({
-                wisdom: `"${response.data[0]}"`,
+                wisdom: response.data[0],
                 isLoading: false
               });
               //GET user's rating
@@ -200,7 +200,7 @@ export default class GetQuote extends Component {
             /5
           </h5>
           <h5 className="rating-avg">
-            Your rating: {this.state.usersRating}/5
+            Your rating: "{this.state.usersRating}"/5
           </h5>
         </div>
       );
