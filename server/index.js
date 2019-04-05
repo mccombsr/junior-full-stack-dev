@@ -43,19 +43,19 @@ app.get(`/api/get-users-rating/:quote`, async (req, res) => {
 // GET rating average
 app.get(`/api/get-rating-avg/:quote`, async (req, res) => {
     let {quote} = req.params;
-    console.log(quote);
+    // console.log(quote);
 
     const db = req.app.get('db');
     let avgRating = await db.get_rating_avg([quote]);
-    console.log(avgRating);
+    // console.log(avgRating);
     res.send(avgRating);
 })
 
 //POST new rating
 app.post(`/api/new-rating/:rating/:quote`, async (req, res) => {
-    console.log('New rating posted!!!')
+    // console.log('New rating posted!!!')
     let {rating, quote} = req.params;
-    console.log(quote, req.ip, rating);
+    // console.log(quote, req.ip, rating);
     const db = req.app.get('db');
     let newRating = await db.post_rating([quote, req.ip, rating])
     res.sendStatus(200);
