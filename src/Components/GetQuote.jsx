@@ -200,7 +200,7 @@ export default class GetQuote extends Component {
             /5
           </h5>
           <h5 className="rating-avg">
-            Your rating: "{this.state.usersRating}"/5
+            Your rating: {this.state.usersRating}/5
           </h5>
         </div>
       );
