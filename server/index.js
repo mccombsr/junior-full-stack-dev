@@ -7,6 +7,7 @@ const massive = require('massive');
 
 
 const app = express();
+app.enable('trust proxy');
 app.use(bodyParser.json());
 app.use( express.static( `${__dirname}/../build` ) );
 
@@ -29,11 +30,43 @@ massive(CONNECTION_STRING)
     })
 
 //middleware
-app.use(session({
-    secret: SECRET,
-    resave: false,
-    saveUninitialized: false
-}))
+// app.use(session({
+//     secret: SECRET,
+//     resave: false,
+//     saveUninitialized: false
+// }))
+
+//ENDPOINTS
+//Check if ip has already rated this quote
+app.get(`/api/get-users-rating/:quote`, async (req, res) => {
+    let {quote} = req.params;
+    // console.log('IP: ',req.ip);
+    const db = req.app.get('db')
+    let usersRating = await db.get_users_rating([quote, req.ip]);
+    console.log('usersRating',usersRating);
+    res.send(usersRating);
+})
+
+// GET rating average
+app.get(`/api/get-rating-avg/:quote`, async (req, res) => {
+    let {quote} = req.params;
+    console.log(quote);
+
+    const db = req.app.get('db');
+    let avgRating = await db.get_rating_avg([quote]);
+    console.log(avgRating);
+    res.send(avgRating);
+})
+
+//POST new rating
+app.post(`/api/new-rating/:rating/:quote`, async (req, res) => {
+    console.log('New rating posted!!!')
+    let {rating, quote} = req.params;
+    console.log(quote, req.ip, rating);
+    const db = req.app.get('db');
+    let newRating = await db.post_rating([quote, req.ip, rating])
+    res.sendStatus(200);
+})
 
 
 app.listen(SERVER_PORT, () => {

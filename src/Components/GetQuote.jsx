@@ -6,21 +6,24 @@ export default class GetQuote extends Component {
     super(props);
     this.state = {
       wisdom: "",
-      size: ""
+      size: "",
+      isLoading: false,
+      usersRating: 0,
+      newRating: 0,
+      ratingAvg: 0
     };
   }
 
   handleGetWisdom = async () => {
     if (this.state.size.length > 0) {
       console.log("Getting wisdom...");
+      this.setState({ isLoading: true, usersRating: 0, newRating: 0 });
+
       // hit API and set quote on this.state.wisdom
-      axios
+      await axios
         .get(`https://ron-swanson-quotes.herokuapp.com/v2/quotes`)
         .then(response => {
-          console.log(response.data[0]);
-          console.log(this.state.wisdom);
           let numWords = response.data[0].split(" ");
-          console.log(numWords);
 
           //If small
           if (this.state.size === "small") {
@@ -28,7 +31,27 @@ export default class GetQuote extends Component {
               numWords.length <= 3 &&
               response.data[0] !== this.state.wisdom
             ) {
-              this.setState({ wisdom: response.data[0] });
+              this.setState({ wisdom: response.data[0], isLoading: false });
+              //GET user's rating
+              axios
+                .get(`/api/get-users-rating/${response.data[0]}`)
+                .then(res => {
+                  console.log("res.data: ", res.data);
+                  if (res.data.length > 0) {
+                    this.setState({ usersRating: res.data[0].rating });
+                  }
+                })
+                .then(
+                  //GET rating average
+                  axios
+                    .get(`/api/get-rating-avg/${response.data[0]}`)
+                    .then(res => {
+                      console.log("Rating Average: ", res.data[0].round);
+                      this.setState({ ratingAvg: res.data[0].round });
+                    })
+                );
+
+              // this.setState({ isLoading: false });
             } else {
               this.handleGetWisdom();
             }
@@ -39,7 +62,26 @@ export default class GetQuote extends Component {
               numWords.length < 13 &&
               response.data[0] !== this.state.wisdom
             ) {
-              this.setState({ wisdom: response.data[0] });
+              this.setState({ wisdom: response.data[0], isLoading: false });
+              // this.setState({ isLoading: false });
+              //GET user's rating
+              axios
+                .get(`/api/get-users-rating/${response.data[0]}`)
+                .then(res => {
+                  console.log("res.data: ", res.data);
+                  if (res.data.length > 0) {
+                    this.setState({ usersRating: res.data[0].rating });
+                  }
+                })
+                .then(
+                  //GET rating average
+                  axios
+                    .get(`/api/get-rating-avg/${response.data[0]}`)
+                    .then(res => {
+                      console.log("Rating Average: ", res.data[0].round);
+                      this.setState({ ratingAvg: res.data[0].round });
+                    })
+                );
             } else {
               this.handleGetWisdom();
             }
@@ -49,25 +91,124 @@ export default class GetQuote extends Component {
               numWords.length > 12 &&
               response.data[0] !== this.state.wisdom
             ) {
-              this.setState({ wisdom: response.data[0] });
+              this.setState({ wisdom: response.data[0], isLoading: false });
+              // this.setState({ isLoading: false });
+              //GET user's rating
+              axios
+                .get(`/api/get-users-rating/${response.data[0]}`)
+                .then(res => {
+                  console.log("res.data: ", res.data);
+                  if (res.data.length > 0) {
+                    this.setState({ usersRating: res.data[0].rating });
+                  }
+                })
+                .then(
+                  //GET rating average
+                  axios
+                    .get(`/api/get-rating-avg/${response.data[0]}`)
+                    .then(res => {
+                      console.log("Rating Average: ", res.data[0].round);
+                      this.setState({ ratingAvg: res.data[0].round });
+                    })
+                );
             } else {
               this.handleGetWisdom();
             }
           }
         });
+    } else {
+      window.alert(
+        "Follow the instructions I gave you and select a size first."
+      );
     }
   };
 
   handleSize = async e => {
     await this.setState({ size: e.target.value });
-    console.log("Wisdom size: ", this.state.size);
+    // console.log("Wisdom size: ", this.state.size);
+  };
+
+  handleRating = async e => {
+    await this.setState({ newRating: e.target.value });
+    console.log(this.state.newRating);
+  };
+
+  handleSubmitRating = async () => {
+    if (this.state.newRating > 0) {
+      await axios.post(
+        `/api/new-rating/${this.state.newRating}/${this.state.wisdom}`
+      );
+      console.log(
+        `${this.state.newRating} was submitted as your rating for this quote.`
+      );
+      this.setState({ usersRating: this.state.newRating });
+      axios.get(`/api/get-rating-avg/${this.state.wisdom}`).then(res => {
+        this.setState({ ratingAvg: res.data[0].round });
+      });
+    } else window.alert("Your rating can not be nothing.");
   };
 
   render() {
-    let wisdom;
-    if (this.state.wisdom.length > 0) {
-      wisdom = <p>"{this.state.wisdom}"</p>;
+    console.log(this.state);
+    let wisdom = <div className="wisdom-container" />;
+    let rating = (
+      <div className="ratings">
+        <h5 className="rating-avg">
+          Average rating:{" "}
+          {/* Have to check typeof ratingAvg because if there aren't any ratings for the quote, the db returns {round: null} */}
+          {typeof this.state.ratingAvg === "string"
+            ? this.state.ratingAvg
+            : "-"}
+          /5
+        </h5>
+        <input
+          type="number"
+          min="1"
+          max="5"
+          onChange={e => {
+            this.handleRating(e);
+          }}
+        />
+        /5
+        <button onClick={this.handleSubmitRating}>Submit Rating</button>
+      </div>
+    );
+
+    //Conditional user's rating render
+    if (this.state.usersRating > 0) {
+      rating = (
+        <div className="ratings">
+          <h5 className="rating-avg">
+            Average rating:{" "}
+            {typeof this.state.ratingAvg === "string"
+              ? this.state.ratingAvg
+              : "-"}
+            /5
+          </h5>
+          <h5 className="rating-avg">
+            Your rating: {this.state.usersRating}/5
+          </h5>
+        </div>
+      );
     }
+
+    //Conditional wisdom render
+    if (this.state.wisdom.length > 0) {
+      wisdom = (
+        <div className="wisdom-container">
+          <p>"{this.state.wisdom}"</p>
+          {rating}
+        </div>
+      );
+    }
+    if (this.state.isLoading === true) {
+      wisdom = (
+        <div className="wisdom-container">
+          <p className="loading">RETRIEVING WISDOM...</p>
+        </div>
+      );
+    }
+
     return (
       <div className="get-quote-container">
         <img
@@ -75,23 +216,26 @@ export default class GetQuote extends Component {
           alt=""
         />
         <div className="get-quote-sub-container">
-          <h4>Select the size of wisdom you seek</h4>
-          <select
-            name=""
-            onChange={e => {
-              this.handleSize(e);
-            }}
-          >
-            <option value="">Choose Here</option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-          <button onClick={this.handleGetWisdom}>
-            Today's your lucky day, as I am now going to share with you my
-            wisdom.
-          </button>
-          <div className="wisdom-container">{wisdom}</div>
+          <div className="size-selection-container">
+            <h4>Select the size of wisdom you seek</h4>
+            <select
+              name=""
+              onChange={e => {
+                this.handleSize(e);
+              }}
+            >
+              <option value="">Choose Here</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+            <button onClick={this.handleGetWisdom}>
+              Today's your lucky day, as I am now going to share with you my
+              wisdom.
+            </button>
+          </div>
+          <hr className="divider" />
+          {wisdom}
         </div>
       </div>
     );
