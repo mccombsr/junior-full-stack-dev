@@ -47,7 +47,7 @@ app.get(`/api/get-rating-avg/:quote`, async (req, res) => {
 
     const db = req.app.get('db');
     let avgRating = await db.get_rating_avg([quote]);
-    // console.log(avgRating);
+    console.log('Rating Average: ',avgRating);
     res.send(avgRating);
 })
 
