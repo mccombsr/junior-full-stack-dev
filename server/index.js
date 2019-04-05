@@ -28,7 +28,7 @@ app.get(`/api/get-users-rating/:quote`, async (req, res) => {
   let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   console.log("Old IP: ", req.ip, "quote: ", quote, "New IP: ", ip);
   const db = req.app.get("db");
-  let usersRating = await db.get_users_rating([quote, req.ip]);
+  let usersRating = await db.get_users_rating([quote, ip]);
   console.log("usersRating", usersRating);
   res.send(usersRating);
 });
