@@ -146,7 +146,7 @@ export default class GetQuote extends Component {
   // Submit users new rating to DB
   handleSubmitRating = async () => {
     // Determine user has selected a valid rating
-    if (this.state.newRating > 0) {
+    if (this.state.newRating > 0 && this.state.newRating < 6) {
       // Send rating to backend
       await axios.post(
         `/api/new-rating/${this.state.newRating}/${this.state.wisdom}`
@@ -158,7 +158,7 @@ export default class GetQuote extends Component {
         this.setState({ ratingAvg: res.data[0].round });
       });
       // Notify user why rating wasn't submitted
-    } else window.alert("Your rating can not be nothing.");
+    } else window.alert("Your rating can not be nothing. It also can't be greater than 5. Now go back and do it right.");
   };
 
   render() {
