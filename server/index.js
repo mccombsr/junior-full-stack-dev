@@ -33,7 +33,7 @@ massive(CONNECTION_STRING)
 //Check if ip has already rated this quote
 app.get(`/api/get-users-rating/:quote`, async (req, res) => {
     let {quote} = req.params;
-    // console.log('IP: ',req.ip);
+    console.log('IP: ',req.ip, 'quote: ', quote);
     const db = req.app.get('db')
     let usersRating = await db.get_users_rating([quote, req.ip]);
     console.log('usersRating',usersRating);
